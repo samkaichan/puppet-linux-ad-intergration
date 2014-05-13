@@ -1,0 +1,47 @@
+[global]
+
+        workgroup = <%= workgroup %>
+        server string = Samba Server Version %v
+
+        netbios name = <%= hostname %>
+
+        # logs split per machine
+        # max 50KB per log file, then rotate
+
+        security = ads
+        passdb backend = tdbsam
+
+        realm = <%= domain %>
+        encrypt passwords = yes
+	idmap config * : backend = rid
+        idmap config * : range = 10000 - 50000
+        idmap config * : base_rid = 0
+        winbind separator = +
+        winbind enum users = yes
+        winbind enum groups = yes
+        template shell = /bin/bash
+        template homedir = /home/%D/%U
+        winbind use default domain = true
+
+        # the login script name depends on the machine name
+        # the login script name depends on the unix user used
+        # disables profiles support by specifing an empty path
+
+        load printers = yes
+        cups options = raw
+
+        #obtain list of printers automatically on SystemV
+
+[homes]
+        comment = Home Directories
+        browseable = no
+        writable = yes
+
+[printers]
+        comment = All Printers
+        path = /var/spool/samba
+        browseable = no
+        guest ok = no
+        writable = no
+        printable = yes
+

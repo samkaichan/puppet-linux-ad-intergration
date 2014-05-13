@@ -1,0 +1,34 @@
+
+Example nodes.pp entry:
+
+In this example the server name or "node" is apache and we want the following customization
+set for specific files needed for Linux AD intergration.
+
+1) KDC value in the /etc/krb5.conf file.
+2) workgroup value in the /etc/samba/smb.conf
+2) search and nameserver values in the /etc/resolv.conf
+
+This is achieved through the use of Puppet's "definition" feature.  It is analogous to
+a function that can receive parameters and execute around the parameters.
+
+===================/etc/puppet/manifest/nodes.pp===================
+
+node 'apache' {
+        include sudo, ad_intergration
+
+        ad_intergration::krb5 { '/etc/krb5.conf':
+                kdc => 'usnywdc01.agoramedia.com',
+        }
+
+        ad_intergration::smb { '/etc/samba/smb.conf':
+                workgroup => 'AGORAMEDIA',
+        }
+
+        ad_intergration::resolv { '/etc/resolv.conf':
+                search => 'agoramedia.com',
+                ns1 => '10.3.2.10',
+                ns2 => '10.3.2.247',
+        }
+}
+
+==========================END EXAMPLE==============================

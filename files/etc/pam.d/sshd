@@ -1,0 +1,12 @@
+#%PAM-1.0
+auth       include      system-auth
+auth       sufficient   pam_stack.so service=system-auth
+auth       sufficient   pam_winbind.so
+account    required     pam_nologin.so
+account    sufficient   pam_winbind.so
+account    include      system-auth
+password   include      system-auth
+session    optional     pam_keyinit.so force revoke
+session    include      system-auth
+session    required     pam_loginuid.so
+session    required     pam_mkhomedir.so skel=/etc/skel umask=0027
